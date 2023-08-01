@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamada Fetch</title>
+    <style>
+        *{
+            margin: 0;
+            border: 0;
+            padding: 0;
+        }
+
+        .conteiner{
+            
+            background: linear-gradient(rgb(58, 58, 58), grey);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .conteiner h1{
+            margin-top: 20px;
+            box-shadow: -3px 7px 0px 2px;
+            background-color: rgb(213, 213, 213);
+        }
+
+        .comentarios {
+            background-color: rgb(229, 229, 229);
+            padding: 20px;
+            margin: 10px;
+            border-radius: 20px;
+            width: 500px;
+            box-shadow: -3px 7px 0px 2px;
+        }
+
+        .posts-conteiner{
+            margin: 0 auto;
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="conteiner">
+        <h1>APi de posts e comentarios</h1><br>
+        <p id="loading">Carregando...</p>
+        <div id="posts-conteiner"></div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    //async => para funcionar em segundo plano
+    //a variavel resposta => é a URL do nosso site
+    //await => faz a execução de uma função async pausar para aguardar a resposta
+
+    BuscarTodosPosts()
+    const loadingElement = document.querySelector("#loading")
+    const postsContainer = document.querySelector("#posts-conteiner")
+
+    async function BuscarTodosPosts() {
+        const resposta = await fetch("http://localhost:22390/Comentarios")
+        const data = await resposta.json()
+
+        console.log(data)
+
+        loadingElement.classList.add("hide")
+        data.map((postagem) => {
+            const div = document.createElement("div")
+            div.className = 'comentarios'
+
+            const nomeConta = document.createElement("h2")
+            const comentarios = document.createElement("p")
+
+            nomeConta.innerText = postagem.nomeConta
+            comentarios.innerText = postagem.comentarios
+
+            div.appendChild(nomeConta)
+            div.appendChild(comentarios)
+            postsContainer.appendChild(div)
+        })
+    }
+</script>
